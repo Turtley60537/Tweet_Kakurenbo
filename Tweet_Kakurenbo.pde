@@ -1,13 +1,15 @@
-import twitter4j.*;
-import twitter4j.api.*;
-import twitter4j.conf.*;
-import twitter4j.http.*;
-import twitter4j.internal.async.*;
-import twitter4j.internal.http.*;
-import twitter4j.internal.logging.*;
-import twitter4j.internal.org.json.*;
-import twitter4j.internal.util.*;
-import twitter4j.util.*;
+//現在ツイッター関連の実装はなし
+
+//import twitter4j.*;
+//import twitter4j.api.*;
+//import twitter4j.conf.*;
+//import twitter4j.http.*;
+//import twitter4j.internal.async.*;
+//import twitter4j.internal.http.*;
+//import twitter4j.internal.logging.*;
+//import twitter4j.internal.org.json.*;
+//import twitter4j.internal.util.*;
+//import twitter4j.util.*;
 
 
 
