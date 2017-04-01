@@ -1,17 +1,16 @@
-class HidePoint {
+class HidePoint {  
   float pointX, pointY;
-  ArrayList<User> hideUser;
+  ArrayList<Player> hidePlayer;
 
   HidePoint(float _pointX, float _pointY) {
     pointX = _pointX;
     pointY = _pointY;
-    hideUser = new ArrayList<User>();
+    hidePlayer = new ArrayList<Player>();
   }
 
-  void setHideUser(User _user) {
-    hideUser.add(_user);
+  void setHidePlayer(Player _player) {
+    hidePlayer.add(_player);
   }
-
 
   void display() {
     fill(255, 100, 100);

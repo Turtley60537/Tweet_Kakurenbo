@@ -1,5 +1,5 @@
 class TitlePhase {
-  void display(){
+  void display() {
     //タイトルフェイズ
     textFont(arial, 150);
     fill(#017C0E);

@@ -1,28 +1,31 @@
-//現在ツイッター関連の実装はなし
+import twitter4j.*;
+import twitter4j.api.*;
+import twitter4j.conf.*;
+import twitter4j.http.*;
+import twitter4j.internal.async.*;
+import twitter4j.internal.http.*;
+import twitter4j.internal.logging.*;
+import twitter4j.internal.org.json.*;
+import twitter4j.internal.util.*;
+import twitter4j.util.*;
 
-//import twitter4j.*;
-//import twitter4j.api.*;
-//import twitter4j.conf.*;
-//import twitter4j.http.*;
-//import twitter4j.internal.async.*;
-//import twitter4j.internal.http.*;
-//import twitter4j.internal.logging.*;
-//import twitter4j.internal.org.json.*;
-//import twitter4j.internal.util.*;
-//import twitter4j.util.*;
+//TwitterAPIを利用するためのもの
+Twitter            rest;
+TwitterStream      stream;
+TwitterAPISettings apiSettings;
 
+PFont arial;    //フォント
 
+enum Phase {
+  title, 
+    invite, 
+    hide, 
+    search, 
+    thanks,
+};
+Phase phase;
 
-PFont arial;
-//phase...
-//0:invite
-//1:
-ArrayList<User>      user      = new ArrayList<User>();
-ArrayList<HidePoint> hidePoint = new ArrayList<HidePoint>();
-
-int phase;
-
-TitlePhase titlePhase = new TitlePhase();
+TitlePhase titlePhase;
 
 InvitePhase invitePhase;
 boolean inviteInitialized = false;
@@ -32,72 +35,102 @@ boolean hideInitialized = false;
 
 SearchPhase searchPhase;
 boolean searchInitialized = false;
-boolean someoneFoundFlag = false;
-ArrayList<User> foundUser = new ArrayList<User>();
-Kame kame;
-boolean emargeKameFlag = false;
+
+
+//参加者のデータを格納するための二次元のHashMap
+//id%5をキー、idを格納
+HashMap<Integer, HashMap<Long, Integer>> playerIndex 
+  = new HashMap<Integer, HashMap<Long, Integer>>();
+
+//HashMapを操作するためのクラス
+ManageMap manageMap = new ManageMap();
+
+ArrayList<Player>    player    = new ArrayList<Player>();
+ArrayList<HidePoint> hidePoint = new ArrayList<HidePoint>();
+
+enum PhaseOfSearch {
+  someoneFound, 
+    search, 
+    winner,
+};
 
 void setup() {
+  //APIを使うための設定
+  apiSettings = new TwitterAPISettings();
+  
   size(800, 600);
-  arial = loadFont("ArialUnicodeMS-48.vlw");
-  phase = 0;
-
-  hidePoint.add( new HidePoint(100, 100) );
-  hidePoint.add( new HidePoint(200, 500) );
-  hidePoint.add( new HidePoint(750, 200) );
-  hidePoint.add( new HidePoint(500, 500) );
-
-  kame = new Kame();
+  arial      = loadFont("ArialUnicodeMS-48.vlw");
+  phase      = Phase.title;
+  titlePhase = new TitlePhase();
 }
 
 void draw() {
   background(#D6F6FF);
-  if ( phase==0 ) {
+  switch (phase) {
 
+  case title:
     titlePhase.display();
-  } else if ( phase==1 ) {
+    break;
 
+  case invite:
     //参加者を募るフェイズ
     if (!inviteInitialized) {
       invitePhase = new InvitePhase();
       inviteInitialized = true;
     }
     invitePhase.display();
-  } else if (phase==2) {
+    break;
 
+  case hide:
     //参加者が隠れるフェイズ
     if (!hideInitialized) {
+      //隠れ場所の追加
+      hidePoint.add( new HidePoint(100, 100) );
+      hidePoint.add( new HidePoint(200, 500) );
+      hidePoint.add( new HidePoint(750, 200) );
+      hidePoint.add( new HidePoint(500, 500) );
+
       hidePhase = new HidePhase();
       hideInitialized = true;
     }
     hidePhase.display();
-  } else if (phase==3) {
+    break;
 
+  case search:
     //かめが探すフェイズ
     if (!searchInitialized) {
       searchPhase = new SearchPhase();
       searchInitialized = true;
     }
     searchPhase.display();
+    break;
+
+  case thanks:
+    textFont(arial, 50);
+    fill(#017C0E);
+    textAlign(CENTER);
+
+    text("ありがとうございました", width/2, height/2);
+    textAlign(CORNER);
+    break;
   }
 }
 
 void keyPressed() {
-  switch(keyCode) {
-  case ENTER:
-    if (phase==0) {
-      phase = 1;
-    } else if (phase==1) {
-      phase = 2;
-    } else if (phase==2) {
-      phase = 3;
-    }
-    break;
+  if (keyCode==ENTER) {
+    switch (phase) {
 
-  case TAB:
-    if (phase==1) {
-      user.add( new User() );
+    case title:
+      phase = Phase.invite;
+      break;
+
+    case invite:
+      phase = Phase.hide;
+      break;
+
+    case hide:
+      phase = Phase.search;
+      break;
     }
-    break;
   }
 }

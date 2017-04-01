@@ -1,12 +1,12 @@
 class Kame {
   float iconX, iconY, iconW;
+  
   int[] patrol;
   int nextPatrolNum;
 
   float nextPointX, nextPointY;
   float thetaToNextHidePoint;
-  float moveVelocity;
-  float moveVelocityX, moveVelocityY;
+  float moveVelocity, moveVelocityX, moveVelocityY;
 
   Kame() {
     //かめの巡回場所を設定
@@ -29,7 +29,7 @@ class Kame {
     iconY = height/2;
     iconW = 0;
 
-    moveVelocity = 2;
+    moveVelocity  = 2;
     nextPatrolNum = -1;
   }
 
@@ -48,7 +48,9 @@ class Kame {
 
     nextPointX = hidePoint.get(patrol[nextPatrolNum]).pointX;
     nextPointY = hidePoint.get(patrol[nextPatrolNum]).pointY;
+    
     thetaToNextHidePoint = atan2( nextPointY-this.iconY, nextPointX-this.iconX );
+    
     moveVelocityX = moveVelocity * cos( thetaToNextHidePoint );
     moveVelocityY = moveVelocity * sin( thetaToNextHidePoint );
   }
@@ -56,8 +58,9 @@ class Kame {
   void move() {
     iconX += moveVelocityX;
     iconY += moveVelocityY;
-    if( dist(iconX, iconY, nextPointX, nextPointY)<20 ){
-      someoneFoundFlag = true;
+    
+    if ( dist(iconX, iconY, nextPointX, nextPointY)<20 ) {
+      searchPhase.phaseOfSearch = PhaseOfSearch.someoneFound;
     }
   }
 
