@@ -16,9 +16,9 @@ class TwitterAPISettings {
     stream.addListener( new MyStatusListener() );
 
     //取得ツイートを自分のフォローする人のツイートに設定
-    stream.user();
+    //stream.user();
     //取得ツイートをキーワードが含まれるツイートに設定
-    //stream.filster("#自己紹介LT");
+    stream.filter(filterTag);
   }
 
 

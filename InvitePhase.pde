@@ -4,20 +4,22 @@ class InvitePhase {
   InvitePhase() {
     //このフェイズの初期化
     initTime = minute()*60 + second();
+    
+    createTweet.invite();
   }
 
   void display() {
     //カウントダウンの表示
     nowTime   = minute()*60 + second();
     countDown = 60 - (nowTime-initTime);
-
+    fill(#FF7403);
     textFont(loadFont("Ricty-Bold-48.vlw"), 100);
     textAlign(CENTER);
     text(countDown, width/2, 100);
     textAlign(CORNER);
 
     if (countDown==0) {
-      phase = Phase.hide;
+      phase = Phase.HIDE;
     }
 
     //参加者のアイコンを並べて表示
@@ -26,7 +28,8 @@ class InvitePhase {
     float firstIconY  = 200;
     int inviteColumn  = 0;
     int inviteRow     = 10;
-    float inviteIconW = (width-40)/inviteRow;
+    //float inviteIconW = (width-40)/inviteRow;
+    float inviteIconW = 76;
 
     for (int i=0; i<player.size(); i++) {
       int invitePositionControl = i - inviteColumn * inviteRow;
