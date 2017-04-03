@@ -7,14 +7,16 @@ class SearchPhase {
 
   ArrayList<Player> foundPlayer = new ArrayList<Player>();
   boolean foundPlayerVisible    = false;  //かめがたどり着いた場所に隠れているプレイヤーがいればtrue
+  boolean tweetFound            = false;
 
   boolean settingNextSearchFlag = true;
   boolean emargeKameFlag        = false;
 
   boolean winnerInitializeFlag  = true;
   boolean kameWonFlag           = false;
+  boolean tweetWinner           = true;
 
-  PImage natsunomushi, mitsuketa, kachi, kamenokachi;
+  PImage mitsuketa, kachi, kamenokachi;
 
   SearchPhase() {
     kame = new Kame();
@@ -27,9 +29,12 @@ class SearchPhase {
         //すなわち、隠れていない時
         phaseOfSearch = PhaseOfSearch.SOMEONE_FOUND;
         foundPlayer.add( player.get(i) );
+
+        tweetFound = true;
       }
     }
-    natsunomushi = loadImage("natsunomushi.png");
+
+    //natsunomushi = loadImage("natsunomushi.png");
     mitsuketa    = loadImage("mitsuketa.png");
     kachi        = loadImage("kachi.png");
     kamenokachi  = loadImage("kamenokachi.png");
@@ -46,6 +51,11 @@ class SearchPhase {
       //見つかったフェーズ
     case SOMEONE_FOUND:
       if (blackout<180 && intervalCount<10) {
+        if (tweetFound) {
+
+          //createTweet.found(foundPlayer);
+          tweetFound = false;
+        }
         //フェードイン
         intervalCount = 0;
         blackout += 15;
@@ -78,11 +88,8 @@ class SearchPhase {
 
       //見つかった人を並べて表示
       if (foundPlayerVisible) {
-        if (kame.nextPatrolNum!=-1 && kame.patrol[kame.nextPatrolNum]==2) {
-          this.showFoundPlayer(natsunomushi, width-100, 200);
-        } else {
-          this.showFoundPlayer(mitsuketa, mitsuketa.width, mitsuketa.height);
-        }
+
+        this.showFoundPlayer(mitsuketa, mitsuketa.width, mitsuketa.height);
       }
       break;
 
@@ -93,7 +100,12 @@ class SearchPhase {
         kame.settingNextSearch();
         foundPlayer = new ArrayList<Player>();
         foundPlayer = hidePoint.get(kame.patrol[kame.nextPatrolNum]).hidePlayer;
+        if (foundPlayer.size()>0) {
+          tweetFound = true;
+        }
         settingNextSearchFlag = false;
+
+        tweetFound    = true;
       }
 
       if (!emargeKameFlag) {
@@ -117,14 +129,20 @@ class SearchPhase {
         if (hidePoint.get(kame.patrol[kame.nextPatrolNum+1]).hidePlayer.size()>0) {
           foundPlayer = hidePoint.get(kame.patrol[kame.nextPatrolNum+1]).hidePlayer;
           foundPlayerVisible   = false;
+
+          //隠れ切った人がいればその人たちの勝利をツイート
+          kameWonFlag = false;
         } else {
           //foundPlayer = hidePoint.get(kame.patrol[kame.nextPatrolNum]).hidePlayer;
+
+          //隠れ切った人がいなければかめの勝利をツイート
           kameWonFlag = true;
         }
         winnerInitializeFlag = false;
       }
 
       if (blackout<180 && intervalCount<10) {
+
         //フェードイン
         intervalCount = 0;
         blackout += 5;
@@ -140,6 +158,15 @@ class SearchPhase {
       }
       if (blackout>=180) foundPlayerVisible = true;
       intervalCount++;
+
+      if (tweetWinner && intervalCount==150) {
+        if (kameWonFlag) {
+          createTweet.kameWin();
+        } else {
+          createTweet.winner(foundPlayer);
+        }
+        tweetWinner = false;
+      }
 
       fill(0, blackout);
       strokeWeight(0);
@@ -157,7 +184,6 @@ class SearchPhase {
       break;
     }
   }
-
 
   void showFoundPlayer(PImage _sentenceImage, float _sentenceW, float _sentenceH) {
 
@@ -186,7 +212,6 @@ class SearchPhase {
     }
 
     imageMode(CENTER);
-
     image(_sentenceImage, width/2, 100, _sentenceW, _sentenceH);
     imageMode(CORNER);
   }

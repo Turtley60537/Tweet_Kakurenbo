@@ -4,7 +4,6 @@ class InvitePhase {
   InvitePhase() {
     //このフェイズの初期化
     initTime = minute()*60 + second();
-    
     createTweet.invite();
   }
 
@@ -15,12 +14,17 @@ class InvitePhase {
     fill(#FF7403);
     textFont(loadFont("Ricty-Bold-48.vlw"), 100);
     textAlign(CENTER);
-    text(countDown, width/2, 100);
+    text(countDown, 100, 100);
     textAlign(CORNER);
 
     if (countDown==0) {
       phase = Phase.HIDE;
     }
+
+    //参加方法のテンプレートを表示
+    //textFont(arial, 20);
+    //text("かめ.のツイートのリンクからツイートするか、以下のようなツイートをしてゲームに参加", 150, 50);
+    //text("ツイート例：ゲームに参加 " +  filterTag, width/2+100, 100);
 
     //参加者のアイコンを並べて表示
     //10人で改行

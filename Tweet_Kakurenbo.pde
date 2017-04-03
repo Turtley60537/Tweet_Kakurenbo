@@ -1,3 +1,7 @@
+//発表時
+//ハッシュタグを本番用に変える
+//キーの取得をするファイルを戻す
+
 import twitter4j.*;
 import twitter4j.api.*;
 import twitter4j.conf.*;
@@ -54,7 +58,8 @@ ArrayList<HidePoint> hidePoint = new ArrayList<HidePoint>();
 
 PImage plain, tree, cave, grass;
 
-String filterTag = "#自己紹介LT";
+String filterTag   = "#FMS_new_test";
+String tagSentence = "%23FMS_new_test";
 
 enum PhaseOfSearch {
   SOMEONE_FOUND, 

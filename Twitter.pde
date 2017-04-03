@@ -18,8 +18,10 @@ class Tweet {
     name       = user.getName();        //ユーザー名
     screenName = user.getScreenName();  //@name
     iconUrl    = user.getProfileImageURL();
+    
+    if(screenName.matches("kame_data")) return;
 
-    println(name, screenName, id);
+    println(name, "@"+screenName, id);
     println("  " + text);
     println();
 
@@ -37,7 +39,7 @@ class Tweet {
         println(iconUrl);
         //playerに新たにプレイヤーを追加
         PImage newPlayerIcon = loadImage(iconUrl);
-        player.add( new Player(newPlayerIcon) );
+        player.add( new Player(newPlayerIcon, screenName) );
       }
     } else if (phase==Phase.HIDE) {
       //println("phase2 getTweet\n");
@@ -72,10 +74,9 @@ class Tweet {
 }
 
 class CreateTweet {
-  String tagSentence = "%23%e8%87%aa%e5%b7%b1%e7%b4%b9%e4%bb%8bLT";
 
   void invite() {
-    String sendingText = "リンクに飛んで、ゲームに参加するためのツイートをしよう！\nhttps://twitter.com/intent/tweet?text=%E3%82%B2%E3%83%BC%E3%83%A0%E3%81%AB%E5%8F%82%E5%8A%A0%20" + tagSentence;
+    String sendingText = filterTag + "\nリンクに飛んで、ゲームに参加するためのツイートをしよう！\nhttps://twitter.com/intent/tweet?text=%E3%82%B2%E3%83%BC%E3%83%A0%E3%81%AB%E5%8F%82%E5%8A%A0%20" + tagSentence;
     try {
       Status status = rest.updateStatus(sendingText);
       println("Successfully update the status to [" + status.getText() + "].");
@@ -86,12 +87,53 @@ class CreateTweet {
   }
 
   void hide() {
-    String sendingText = "リンクに飛んで、隠れよう！\n木\nhttps://twitter.com/intent/tweet?text=%E6%9C%A8%20"+tagSentence+"\n草むら\nhttps://twitter.com/intent/tweet?text=%E8%8D%89%E3%82%80%E3%82%89%20"+tagSentence+"\n洞窟\nhttps://twitter.com/intent/tweet?text=%E6%B4%9E%E7%AA%9F%20"+tagSentence+"\n太陽\nhttps://twitter.com/intent/tweet?text=%E5%A4%AA%E9%99%BD%20"+tagSentence;
+    String sendingText = filterTag + " リンクに飛んで、隠れよう！\n木\nhttps://twitter.com/intent/tweet?text=%E6%9C%A8%20"+tagSentence+"\n草むら\nhttps://twitter.com/intent/tweet?text=%E8%8D%89%E3%82%80%E3%82%89%20"+tagSentence+"\n洞窟\nhttps://twitter.com/intent/tweet?text=%E6%B4%9E%E7%AA%9F%20"+tagSentence+"\n太陽\nhttps://twitter.com/intent/tweet?text=%E5%A4%AA%E9%99%BD%20"+tagSentence;
     try {
       Status status = rest.updateStatus(sendingText);
       println("Successfully update the status to [" + status.getText() + "].");
     }
     catch ( TwitterException e ) {
+      println(e.getStatusCode());
+    }
+  }
+
+  //void found( ArrayList<Player> _foundPlayer ) {
+  //  String sendingText = "";
+  //  for (int i=0; i<_foundPlayer.size(); i++) {
+  //    sendingText += "@"+ _foundPlayer.get(i).screenName + " ";
+  //  }
+  //  sendingText += "を見つけました！\n" + filterTag;
+  //  try {
+  //    Status status = rest.updateStatus(sendingText);
+  //    println("Successfully update the status to [" + status.getText() + "].");
+  //  }
+  //  catch ( TwitterException e ) {
+  //    println(e.getStatusCode());
+  //  }
+  //}
+
+  void winner( ArrayList<Player> _winnerPlayer ) {
+    String sendingText = "";
+    for (int i=0; i<_winnerPlayer.size(); i++) {
+      sendingText += "@"+ _winnerPlayer.get(i).screenName + " ";
+    }
+    sendingText += "が隠れ切りました\n" + filterTag;
+    try {
+      Status status = rest.updateStatus(sendingText);
+      println("Successfully update the status to [" + status.getText() +"].");
+    }
+    catch ( TwitterException e ){
+      println(e.getStatusCode());
+    }
+  }
+  
+  void kameWin(){
+    String sendingText = "私の勝ちです\n" + filterTag;
+    try {
+      Status status = rest.updateStatus(sendingText);
+      println("Successfully update the status to [" + status.getText() +"].");
+    }
+    catch ( TwitterException e ){
       println(e.getStatusCode());
     }
   }

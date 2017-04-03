@@ -8,7 +8,7 @@ class HidePhase {
     float firstIconY  = height/2-50;
     float hideIconW   = 50;
     int hideColumn    = 0;
-    int hideRow       = 8;
+    int hideRow       = 10;
 
     for (int i=0; i<player.size(); i++) {
       int hidePositionControl = i - hideColumn * hideRow;
@@ -21,7 +21,7 @@ class HidePhase {
 
       player.get(i).setPosition(hideIconX, hideIconY);
     }
-    
+
     initTime = minute()*60 + second();
     createTweet.hide();
   }
@@ -34,13 +34,21 @@ class HidePhase {
     fill(#FF7403);
     textFont(loadFont("Ricty-Bold-48.vlw"), 100);
     textAlign(CENTER);
-    text(countDown, width/2, 100);
+    text(countDown, 100, 100);
     textAlign(CORNER);
 
     if (countDown==0) {
       phase = Phase.SEARCH;
     }
 
+    //参加方法のテンプレートを表示
+    //fill(255);
+    //rect(width/2+50, 20, width/2-100, 100);
+    
+    //textFont(arial, 20);
+    //fill(0);
+    //text("かめ.のツイートのリンクからツイートするか、以下のようなツイートをして隠れる場所を選択", 150, 50);
+    //text("ツイート例　洞窟 " +  filterTag, width/2+100, 100);
 
     //for (int j=0; j<hidePoint.size(); j++) {
     //  //隠れ場所の目印

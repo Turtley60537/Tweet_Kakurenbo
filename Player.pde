@@ -7,13 +7,16 @@ class Player {
   boolean reachedHidePoint;
 
   PImage iconImage;
-
-  Player(PImage _playerImage) {
+  
+  String screenName;
+  
+  Player(PImage _playerImage, String _screenName) {
     iconW            = 50;
     roll             = 0;
     reachedHidePoint = false;
     iconImage        = _playerImage;
     hidePointNum     = -1;
+    screenName       = _screenName;
   }
 
   void displayParticipant(float _x, float _y, float _w) {

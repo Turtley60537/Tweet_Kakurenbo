@@ -4,7 +4,8 @@ class TwitterAPISettings {
 
 
   TwitterAPISettings() {
-    lines = loadStrings("../twitterOathKey.txt");
+    //lines = loadStrings("../twitterOathKey.txt");
+    lines = loadStrings("../twitterOathKeyData.txt");
     final String consumerKey       = lines[0];
     final String consumerSecret    = lines[1];
     final String accessToken       = lines[2];
