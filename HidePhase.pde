@@ -1,7 +1,10 @@
 class HidePhase {
   int initTime, nowTime, countDown;
+  PImage hideSample;
 
   HidePhase() {
+    hideSample = loadImage("hideSample.png");
+
     //このフェイズの初期化
     //初期位置の設定
     float firstIconX  = 200;
@@ -42,13 +45,10 @@ class HidePhase {
     }
 
     //参加方法のテンプレートを表示
-    //fill(255);
-    //rect(width/2+50, 20, width/2-100, 100);
-    
-    //textFont(arial, 20);
-    //fill(0);
-    //text("かめ.のツイートのリンクからツイートするか、以下のようなツイートをして隠れる場所を選択", 150, 50);
-    //text("ツイート例　洞窟 " +  filterTag, width/2+100, 100);
+    pushMatrix();
+    scale(0.5);
+    image(hideSample, 340, 40);
+    popMatrix();
 
     //for (int j=0; j<hidePoint.size(); j++) {
     //  //隠れ場所の目印

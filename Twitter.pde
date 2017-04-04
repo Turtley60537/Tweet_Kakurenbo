@@ -20,6 +20,7 @@ class Tweet {
     iconUrl    = user.getProfileImageURL();
     
     if(screenName.matches("kame_data")) return;
+    if(text.contains("かめかめ")) return;
 
     println(name, "@"+screenName, id);
     println("  " + text);
@@ -76,7 +77,7 @@ class Tweet {
 class CreateTweet {
 
   void invite() {
-    String sendingText = filterTag + "\nリンクに飛んで、ゲームに参加するためのツイートをしよう！\nhttps://twitter.com/intent/tweet?text=%E3%82%B2%E3%83%BC%E3%83%A0%E3%81%AB%E5%8F%82%E5%8A%A0%20" + tagSentence;
+    String sendingText = filterTag + " リンクに飛んで、ゲームに参加するためのツイートをしよう！かめかめ\nhttps://twitter.com/intent/tweet?text=%E3%82%B2%E3%83%BC%E3%83%A0%E3%81%AB%E5%8F%82%E5%8A%A0%20" + tagSentence;
     try {
       Status status = rest.updateStatus(sendingText);
       println("Successfully update the status to [" + status.getText() + "].");
@@ -87,7 +88,7 @@ class CreateTweet {
   }
 
   void hide() {
-    String sendingText = filterTag + " リンクに飛んで、隠れよう！\n木\nhttps://twitter.com/intent/tweet?text=%E6%9C%A8%20"+tagSentence+"\n草むら\nhttps://twitter.com/intent/tweet?text=%E8%8D%89%E3%82%80%E3%82%89%20"+tagSentence+"\n洞窟\nhttps://twitter.com/intent/tweet?text=%E6%B4%9E%E7%AA%9F%20"+tagSentence+"\n太陽\nhttps://twitter.com/intent/tweet?text=%E5%A4%AA%E9%99%BD%20"+tagSentence;
+    String sendingText = filterTag + " リンクに飛んで、隠れよう！かめかめ\n木\nhttps://twitter.com/intent/tweet?text=%E6%9C%A8%20"+tagSentence+"\n草むら\nhttps://twitter.com/intent/tweet?text=%E8%8D%89%E3%82%80%E3%82%89%20"+tagSentence+"\n洞窟\nhttps://twitter.com/intent/tweet?text=%E6%B4%9E%E7%AA%9F%20"+tagSentence+"\n太陽\nhttps://twitter.com/intent/tweet?text=%E5%A4%AA%E9%99%BD%20"+tagSentence;
     try {
       Status status = rest.updateStatus(sendingText);
       println("Successfully update the status to [" + status.getText() + "].");
